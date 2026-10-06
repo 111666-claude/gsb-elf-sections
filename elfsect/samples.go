@@ -30,6 +30,9 @@ func Build(order binary.ByteOrder, names []string, extended, xindex bool) []byte
 	shoff := shstrOff + len(strtab)
 	out := make([]byte, shoff+shnum*64)
 	copy(out, []byte{0x7f, 'E', 'L', 'F', 2, 1, 1, 0})
+	if order == binary.BigEndian {
+		out[5] = 2
+	}
 	put16 := func(off int, v uint16) { order.PutUint16(out[off:], v) }
 	put32 := func(off int, v uint32) { order.PutUint32(out[off:], v) }
 	put64 := func(off int, v uint64) { order.PutUint64(out[off:], v) }
